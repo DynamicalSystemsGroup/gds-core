@@ -9,7 +9,7 @@ warnings.warn(
     stacklevel=2,
 )
 
-__version__ = "0.99.0"
+__version__ = "0.99.1"
 
 from gds_domains.symbolic import (  # noqa: E402
     HamiltonianSpec,

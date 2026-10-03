@@ -3,6 +3,35 @@
 All notable changes to the GDS ecosystem are documented here. Each release
 lists affected packages, breaking changes, and new capabilities.
 
+## 2026-10-03 — Symbolic expression security fix
+
+### gds-domains v0.1.1
+
+Fix arbitrary Python execution from untrusted symbolic expression strings in
+ODE compilation, state/output linearization, and Hamiltonian dynamics and
+Lagrangian parsing. Expressions are now constructed directly from validated
+syntax, with checked symbol names and dummy arguments for code generation.
+
+**Compatibility:** only the [documented mathematical grammar](symbolic/index.md#expression-grammar-and-security)
+is accepted. Unknown symbols, arbitrary Python/SymPy constructors, unsupported
+syntax, and invalid symbol names raise `SymbolicError` when consumed. Existing
+models using supported arithmetic and math functions continue to work.
+
+Expression length, syntax node count, depth, and integer literal size are bounded;
+these limits do not bound subsequent symbolic computations.
+
+### gds-symbolic v0.99.1
+
+Require `gds-domains[symbolic]>=0.1.1` so upgrading this compatibility package
+requires the fixed implementation. The package remains deprecated in favor of
+`gds_domains.symbolic`.
+
+Users of affected versions should upgrade with
+`python -m pip install --upgrade "gds-domains[symbolic]>=0.1.1"` or
+`python -m pip install --upgrade "gds-symbolic>=0.99.1"`.
+
+---
+
 ## 2026-04-07 — gds-proof Layer 1 Integration
 
 Promotes gds-proof from standalone (Layer 0, protocol-only) to Layer 1

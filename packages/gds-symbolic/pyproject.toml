@@ -28,7 +28,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "gds-domains[symbolic]>=0.1.0",
+    "gds-domains[symbolic]>=0.1.1",
 ]
 
 [project.urls]
