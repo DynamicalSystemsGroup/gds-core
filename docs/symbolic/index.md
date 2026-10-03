@@ -21,7 +21,7 @@
 - **`OutputEquation`** -- symbolic expression for sensor output `y` (e.g., `"x + noise"`)
 - **`compile_to_ode()`** -- lambdifies symbolic equations into a callable `ODEFunction` compatible with `gds-continuous`
 - **`linearize()`** -- computes Jacobian matrices (A, B, C, D) at an operating point
-- **Safe expression parsing** -- uses `sympy.parsing.sympy_parser.parse_expr`, never `eval`
+- **Restricted expression grammar** -- constructs SymPy expressions directly from validated syntax
 
 ## When to Use It
 
@@ -62,10 +62,10 @@ gds-control (pip install gds-domains)
 Symbolic expressions (strings)
     |
     v
-parse_expr()  -->  SymPy Expr objects
+Validated AST  -->  SymPy Expr objects
     |
     v
-compile_to_ode()  -->  ODEFunction (lambdified, numpy-backed)
+compile_to_ode()  -->  ODEFunction (lambdified, math-backed)
     |                       |
     v                       v
 linearize()           gds-continuous ODEModel
@@ -74,7 +74,39 @@ linearize()           gds-continuous ODEModel
 LinearSystem(A, B, C, D)   -->  eigenvalue analysis, controllability, etc.
 ```
 
-All expression parsing uses `sympy.parsing.sympy_parser.parse_expr` with a restricted transformation set -- arbitrary code execution is not possible.
+## Expression grammar and security
+
+ODE compilation, linearization (including output equations), and Hamiltonian
+state dynamics and Lagrangian parsing share a restricted expression grammar:
+
+- Integer and finite floating-point literals, including scientific notation.
+- Declared state, input, and parameter names; Hamiltonian expressions also
+  support `t` and generated costate names.
+- Constants `pi` and `E`, unless a declared variable uses the same name.
+- Parentheses, `+`, `-`, `*`, `/`, `**`, and unary `+`/`-`.
+- One-argument functions `sin`, `cos`, `tan`, `asin`, `acos`, `atan`, `sinh`,
+  `cosh`, `tanh`, `exp`, `sqrt`, and `Abs`; `log` takes one argument or an
+  optional second argument for the base.
+
+Use explicit multiplication (`2*x`) and `**` for powers. Unknown symbols,
+SymPy constructors such as `Symbol(...)`, attribute access, indexing, Python
+statements, arbitrary calls, keyword arguments, and argument unpacking raise
+`SymbolicError` when the expressions are consumed. Model construction performs
+structural validation; it does not parse expressions. `terminal_cost` is currently
+stored but not consumed by Hamiltonian derivation.
+
+The parser validates the complete Python AST and constructs SymPy objects directly;
+it does not evaluate the source string. Symbol names must be ASCII Python
+identifiers, excluding keywords and names starting with `__`. Code generation uses
+`lambdify` with dummy arguments and internally constructed expressions.
+`lambdify` itself generates and executes Python code, so arbitrary externally
+supplied SymPy objects are outside this expression-string security boundary.
+
+Expressions are limited to 4,096 characters, 512 AST nodes, depth 64, and integer
+literals of at most 256 bits. Constant simplification is deferred during parsing.
+These checks do not bound all subsequent symbolic differentiation, simplification,
+or numerical work. Services processing hostile input should enforce time and
+memory limits in an isolated worker.
 
 ## Quick Start
 

@@ -17,6 +17,7 @@ from typing import Any
 from pydantic import BaseModel
 
 from gds_domains.symbolic._compat import require_sympy
+from gds_domains.symbolic._expressions import make_symbols, parse_expression
 
 
 class HamiltonianSpec(BaseModel, frozen=True):
@@ -25,9 +26,9 @@ class HamiltonianSpec(BaseModel, frozen=True):
     Parameters
     ----------
     lagrangian
-        Running cost L(x, u, t) as a SymPy-parseable string.
+        Running cost L(x, u, t) using the restricted mathematical expression grammar.
     terminal_cost
-        Terminal cost Phi(x(T)) as a SymPy-parseable string.
+        Terminal cost Phi(x(T)) using the restricted mathematical expression grammar.
         Empty string means no terminal cost.
     control_bounds
         Lower and upper bounds for each control input.
@@ -100,14 +101,13 @@ def derive_hamiltonian(
     """
     require_sympy()
     import sympy
-    from sympy.parsing.sympy_parser import parse_expr
 
     # Build symbol tables
-    state_syms = {n: sympy.Symbol(n) for n in state_names}
+    state_syms = make_symbols(state_names)
     costate_names = [f"p_{n}" for n in state_names]
-    costate_syms = {n: sympy.Symbol(n) for n in costate_names}
-    input_syms = {n: sympy.Symbol(n) for n in input_names}
-    param_syms = {n: sympy.Symbol(n) for n in param_names}
+    costate_syms = make_symbols(costate_names)
+    input_syms = make_symbols(input_names)
+    param_syms = make_symbols(param_names)
     t_sym = sympy.Symbol("t")
 
     all_syms = {
@@ -122,12 +122,12 @@ def derive_hamiltonian(
     f_exprs = {}
     for name in state_names:
         if name in state_equations:
-            f_exprs[name] = parse_expr(state_equations[name], local_dict=all_syms)
+            f_exprs[name] = parse_expression(state_equations[name], all_syms)
         else:
             f_exprs[name] = sympy.Integer(0)
 
     # Parse Lagrangian L(x, u, t)
-    lagrangian = parse_expr(spec.lagrangian, local_dict=all_syms)
+    lagrangian = parse_expression(spec.lagrangian, all_syms)
 
     # Hamiltonian: H = L + p^T f
     hamiltonian = lagrangian
@@ -156,7 +156,9 @@ def derive_hamiltonian(
         + [input_syms[n] for n in input_names]
         + [param_syms[n] for n in param_names]
     )
-    rhs_lambda = sympy.lambdify(ordered_symbols, rhs_exprs, modules="math")
+    rhs_lambda = sympy.lambdify(
+        ordered_symbols, rhs_exprs, modules="math", dummify=True
+    )
 
     def augmented_ode(t: float, y: list[float], params: dict[str, Any]) -> list[float]:
         input_vals = [params.get(n, 0.0) for n in input_names]

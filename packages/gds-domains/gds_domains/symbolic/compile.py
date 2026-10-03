@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from gds_domains.symbolic._compat import require_sympy
+from gds_domains.symbolic._expressions import make_symbols, parse_expression
 
 if TYPE_CHECKING:
     from gds_continuous.types import ODEFunction
@@ -31,18 +32,17 @@ def compile_to_ode(
     input_names = [i.name for i in model.inputs]
 
     # Build symbol table
-    state_syms = {name: sympy.Symbol(name) for name in state_order}
-    input_syms = {name: sympy.Symbol(name) for name in input_names}
-    param_syms = {name: sympy.Symbol(name) for name in model.symbolic_params}
+    state_syms = make_symbols(state_order)
+    input_syms = make_symbols(input_names)
+    param_syms = make_symbols(model.symbolic_params)
 
     all_syms = {**state_syms, **input_syms, **param_syms}
 
-    # Parse expressions using safe parser (no eval, no builtins)
-    from sympy.parsing.sympy_parser import parse_expr
+    # Construct expressions from the restricted mathematical grammar.
 
     eq_map: dict[str, Any] = {}
     for eq in model.state_equations:
-        expr = parse_expr(eq.expr_str, local_dict=all_syms)
+        expr = parse_expression(eq.expr_str, all_syms)
         eq_map[eq.state_name] = expr
 
     # Build ordered RHS vector
@@ -60,7 +60,9 @@ def compile_to_ode(
         + [input_syms[n] for n in input_names]
         + [param_syms[n] for n in model.symbolic_params]
     )
-    rhs_lambda = sympy.lambdify(ordered_symbols, rhs_exprs, modules="math")
+    rhs_lambda = sympy.lambdify(
+        ordered_symbols, rhs_exprs, modules="math", dummify=True
+    )
 
     n_states = len(state_order)
 

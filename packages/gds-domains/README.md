@@ -20,3 +20,12 @@ pip install gds-domains[symbolic]                # + SymPy
 pip install gds-domains[nashpy]                  # + Nash equilibrium
 pip install gds-domains[all]                     # everything
 ```
+
+## Symbolic expressions
+
+Symbolic compilation and analysis accept a restricted mathematical grammar:
+declared variables, numeric literals, arithmetic, and approved math functions.
+Unsupported syntax raises `SymbolicError` when an expression is consumed.
+See the [expression grammar and security limits](https://dynamicalsystemsgroup.github.io/gds-core/symbolic/#expression-grammar-and-security)
+for supported functions, symbol naming rules, and resource limits. Parsing limits
+do not bound all subsequent symbolic computations.
