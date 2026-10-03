@@ -8,11 +8,11 @@ from pydantic import BaseModel
 class StateEquation(BaseModel, frozen=True):
     """Symbolic ODE right-hand side for a single state variable.
 
-    Declares: dx_i/dt = expr, where ``expr_str`` is a SymPy-parseable
-    string (e.g. ``"-k*x + u"``).
+    Declares: dx_i/dt = expr, where ``expr_str`` is a string in the
+    restricted mathematical grammar (e.g. ``"-k*x + u"``).
 
     The string form is R1-serializable. The sympy.Expr object is R3 —
-    reconstructed at lambdify time via ``sympy.sympify``.
+    constructed from validated syntax when the expression is consumed.
     """
 
     state_name: str

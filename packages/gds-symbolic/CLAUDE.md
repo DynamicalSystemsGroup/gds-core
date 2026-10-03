@@ -14,7 +14,7 @@
 |--------|---------|
 | `elements.py` | `StateEquation`, `OutputEquation` — frozen Pydantic models storing `expr_str` (R1-serializable) |
 | `model.py` | `SymbolicControlModel(ControlModel)` — adds symbolic equations + validation |
-| `compile.py` | `compile_to_ode(model)` → `(ODEFunction, state_order)` via `parse_expr` + `lambdify` |
+| `compile.py` | `compile_to_ode(model)` → `(ODEFunction, state_order)` via validated AST construction + `lambdify` |
 | `linearize.py` | `linearize(model, x0, u0)` → `LinearizedSystem(A, B, C, D)` via Jacobians |
 | `transfer.py` | `ss_to_tf()`, `poles()`, `zeros()`, `controllability_matrix()`, `sensitivity()` (Gang of Six) |
 | `delay.py` | `pade_approximation()`, `delay_system()` — Padé time delay modeling |
@@ -22,7 +22,12 @@
 
 ### Security
 
-Expression parsing uses `sympy.parsing.sympy_parser.parse_expr` with a restricted `local_dict` — NOT `sympify` (which uses `eval`). This is safe for untrusted `expr_str` input.
+Use the shared parser in `gds_domains.symbolic._expressions` for expression
+strings. It validates an allowlist of AST nodes, names and math calls, then builds
+SymPy expressions directly. Symbol creation uses `make_symbols`; numerical code
+generation uses `lambdify(..., dummify=True)`. Keep all expression entry points on
+this path. The grammar and computational limits are documented in
+`docs/symbolic/index.md`; parsing limits do not bound subsequent symbolic work.
 
 ### R1/R2/R3 boundary
 

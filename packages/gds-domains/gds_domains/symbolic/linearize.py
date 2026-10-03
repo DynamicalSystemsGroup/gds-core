@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 from gds_domains.symbolic._compat import require_sympy
+from gds_domains.symbolic._expressions import make_symbols, parse_expression
 
 if TYPE_CHECKING:
     from gds_domains.symbolic.model import SymbolicControlModel
@@ -53,16 +54,15 @@ def linearize(
         any unspecified parameter.
     """
     require_sympy()
-    import sympy
 
     param_values = param_values or {}
 
     state_names = [s.name for s in model.states]
     input_names = [i.name for i in model.inputs]
 
-    state_syms = {name: sympy.Symbol(name) for name in state_names}
-    input_syms = {name: sympy.Symbol(name) for name in input_names}
-    param_syms = {name: sympy.Symbol(name) for name in model.symbolic_params}
+    state_syms = make_symbols(state_names)
+    input_syms = make_symbols(input_names)
+    param_syms = make_symbols(model.symbolic_params)
 
     all_syms: dict[str, Any] = {**state_syms, **input_syms, **param_syms}
 
@@ -75,12 +75,11 @@ def linearize(
     for name in model.symbolic_params:
         subs[param_syms[name]] = param_values.get(name, 0.0)
 
-    # Parse state equations using safe parser (no eval, no builtins)
-    from sympy.parsing.sympy_parser import parse_expr
+    # Construct state expressions from the restricted mathematical grammar.
 
     eq_map: dict[str, Any] = {}
     for eq in model.state_equations:
-        eq_map[eq.state_name] = parse_expr(eq.expr_str, local_dict=all_syms)
+        eq_map[eq.state_name] = parse_expression(eq.expr_str, all_syms)
 
     # A matrix: df_i/dx_j
     A = _jacobian(eq_map, state_names, state_syms, subs)
@@ -92,7 +91,7 @@ def linearize(
     out_map: dict[str, Any] = {}
     output_names: list[str] = []
     for eq in model.output_equations:
-        out_map[eq.sensor_name] = parse_expr(eq.expr_str, local_dict=all_syms)
+        out_map[eq.sensor_name] = parse_expression(eq.expr_str, all_syms)
         output_names.append(eq.sensor_name)
 
     # C matrix: dh_i/dx_j

@@ -35,3 +35,12 @@ ode_fn, state_order = model.to_ode_function()
 lin = model.linearize(x0=[0.0, 0.0], u0=[0.0])
 print(lin.A)  # [[0, 1], [-k, -c]] evaluated at operating point
 ```
+
+## Symbolic expressions
+
+Symbolic compilation and analysis accept a restricted mathematical grammar:
+declared variables, numeric literals, arithmetic, and approved math functions.
+Unsupported syntax raises `SymbolicError` when an expression is consumed.
+See the [expression grammar and security limits](https://dynamicalsystemsgroup.github.io/gds-core/symbolic/#expression-grammar-and-security)
+for supported functions, symbol naming rules, and resource limits. Parsing limits
+do not bound all subsequent symbolic computations.
