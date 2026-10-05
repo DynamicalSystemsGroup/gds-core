@@ -1,5 +1,9 @@
 # Interoperability: From Specification to Computation
 
+For engineering architecture exchange, see the experimental
+[SysML v2 interoperability guide](sysml-v2.md), including the recorded Pilot
+validation and the boundaries for OpenSysML and repository integration.
+
 > GDS specifications are not just documentation — they are structured representations that project cleanly onto domain-specific computation. This guide demonstrates two concrete projections: **Nash equilibrium computation** (game theory) and **iterated tournament simulation** (evolutionary dynamics), both built on the same OGS game structure without modifying the framework.
 
 ---

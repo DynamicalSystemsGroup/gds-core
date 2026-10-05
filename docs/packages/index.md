@@ -40,6 +40,7 @@ graph TD
 | Use a domain vocabulary | [Choosing a DSL](../guides/choosing-a-dsl.md) | `gds-domains.*` |
 | Render diagrams | [Visualization](../viz/index.md) | `gds-viz` |
 | Export OWL, SHACL, or SPARQL | [OWL](../owl/index.md) | `gds-interchange` |
+| Inspect a SysML v2 architecture view | [SysML v2 interoperability](../guides/sysml-v2.md) (experimental development work) | `gds_interchange.sysml` |
 | Run discrete-time simulations | [Simulation](../sim/index.md) | `gds-sim` |
 | Run ODE simulations | [Continuous-Time](../continuous/index.md) | `gds-continuous` |
 | Bridge `GDSSpec` to simulation | [Analysis](../analysis/index.md) | `gds-analysis` |
@@ -52,6 +53,7 @@ graph TD
 | [`gds-framework`](../framework/index.md) | `gds` | Core specification, composition, compilation, and structural verification |
 | [`gds-viz`](../viz/index.md) | `gds_viz` | Mermaid diagrams and visual projections of GDS specifications |
 | [`gds-interchange`](../owl/index.md) | `gds_interchange.owl` | OWL, SHACL, SPARQL, and semantic-web interchange |
+| Experimental development exporter | `gds_interchange.sysml` | [SysML v2 structural projection](../guides/sysml-v2.md) with a mapping/loss manifest; not a released integration |
 | [`gds-proof`](../proof/index.md) | `gds_proof` | Deterministic model identity and symbolic invariant proof checks |
 
 ## Domain DSLs

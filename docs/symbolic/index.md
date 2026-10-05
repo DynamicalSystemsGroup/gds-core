@@ -1,45 +1,45 @@
-# gds-symbolic
+# Symbolic Math (`gds-domains`)
 
-[![PyPI](https://img.shields.io/pypi/v/gds-symbolic)](https://pypi.org/project/gds-symbolic/)
-[![Python](https://img.shields.io/pypi/pyversions/gds-symbolic)](https://pypi.org/project/gds-symbolic/)
+[![PyPI](https://img.shields.io/pypi/v/gds-domains)](https://pypi.org/project/gds-domains/)
+[![Python](https://img.shields.io/pypi/pyversions/gds-domains)](https://pypi.org/project/gds-domains/)
 [![License](https://img.shields.io/github/license/DynamicalSystemsGroup/gds-core)](https://github.com/DynamicalSystemsGroup/gds-core/blob/main/LICENSE)
 
-**SymPy bridge for gds-control** -- symbolic state equations, automatic linearization, and ODE code generation.
+**SymPy bridge for `gds_domains.control`** -- symbolic state equations, automatic linearization, and ODE code generation.
 
 ## Package Identity
 
 | Distribution | Import | Role |
 |---|---|---|
-| `gds-symbolic` | `gds_domains.symbolic` | SymPy bridge for `gds-control` models |
-| `gds-domains` | `gds_domains.symbolic` | Consolidated domain package distribution |
+| `gds-domains[symbolic]` | `gds_domains.symbolic` | Current symbolic implementation for control models |
+| `gds-symbolic` | `gds_symbolic` | Deprecated compatibility package; use `gds-domains[symbolic]` for new projects |
 
 ## What is this?
 
-`gds-symbolic` extends `gds-control`'s `ControlModel` with symbolic mathematics. Instead of writing numerical right-hand side functions by hand, you declare state and output equations as symbolic expressions and let the compiler do the rest.
+`gds_domains.symbolic` extends `gds_domains.control`'s `ControlModel` with symbolic mathematics. Instead of writing numerical right-hand side functions by hand, you declare state and output equations as symbolic expressions and let the compiler do the rest.
 
 - **`StateEquation`** -- symbolic expression for `dx/dt` (e.g., `"-k * x + b * u"`)
 - **`OutputEquation`** -- symbolic expression for sensor output `y` (e.g., `"x + noise"`)
-- **`compile_to_ode()`** -- lambdifies symbolic equations into a callable `ODEFunction` compatible with `gds-continuous`
-- **`linearize()`** -- computes Jacobian matrices (A, B, C, D) at an operating point
+- **`model.to_ode_function()`** -- returns an ODE callable and its state order, compatible with `gds-continuous`
+- **`model.linearize()`** -- computes Jacobian matrices (A, B, C, D) at an operating point
 - **Restricted expression grammar** -- constructs SymPy expressions directly from validated syntax
 
 ## When to Use It
 
-Use `gds-symbolic` when a control model's dynamics should be specified as
+Use `gds_domains.symbolic` when a control model's dynamics should be specified as
 symbolic equations and then linearized or compiled to ODE functions. Use
-`gds-control` alone when numerical callables are enough.
+`gds_domains.control` alone when numerical callables are enough.
 
 ## Architecture
 
 ```
-gds-control (pip install gds-domains)
+gds_domains.control (pip install gds-domains)
 |
 |  State-space control DSL: State, Input, Sensor, Controller.
 |
-+-- gds-symbolic (uv add gds-symbolic[sympy])
++-- gds_domains.symbolic (uv add "gds-domains[symbolic]>=0.1.1")
     |
     |  Symbolic layer: StateEquation, OutputEquation,
-    |  compile_to_ode(), linearize().
+    |  model.to_ode_function(), model.linearize().
     |
     +-- gds-continuous (optional integration)
         |
@@ -53,25 +53,25 @@ gds-control (pip install gds-domains)
 | `StateEquation` | Symbolic `dx_i/dt = expr(x, u, params)` |
 | `OutputEquation` | Symbolic `y_i = expr(x, u, params)` |
 | `SymbolicControlModel` | Extends `ControlModel` with symbolic equations |
-| `ODEFunction` | Lambdified callable: `f(t, x, params) -> dx/dt` |
-| `LinearSystem` | Matrices `(A, B, C, D)` from Jacobian linearization |
+| `ODEFunction` | Lambdified callable: `f(t, y, params) -> list[float]`, with states in the returned order |
+| `LinearizedSystem` | Matrices `(A, B, C, D)` as lists of lists from Jacobian linearization |
 
 ## How It Works
 
-```
-Symbolic expressions (strings)
+```text
+SymbolicControlModel: declared states, inputs, parameters, and expressions
     |
-    v
-Validated AST  -->  SymPy Expr objects
-    |
-    v
-compile_to_ode()  -->  ODEFunction (lambdified, math-backed)
-    |                       |
-    v                       v
-linearize()           gds-continuous ODEModel
-    |
-    v
-LinearSystem(A, B, C, D)   -->  eigenvalue analysis, controllability, etc.
+    +-- validated AST --> directly constructed SymPy expressions
+                              |
+                              +-- to_ode_function() --> (ode_fn, state_order)
+                              |                          |
+                              |                          v
+                              |                    gds-continuous ODEModel
+                              |
+                              +-- linearize(x0, u0, param_values)
+                                       |
+                                       v
+                                LinearizedSystem(A, B, C, D)
 ```
 
 ## Expression grammar and security
@@ -111,17 +111,20 @@ memory limits in an isolated worker.
 ## Quick Start
 
 ```bash
-uv add "gds-symbolic[sympy]"
+uv add "gds-domains[symbolic]>=0.1.1"
 ```
+
+`gds-symbolic>=0.99.1` remains available for existing applications using the
+legacy `gds_symbolic` import. It requires the fixed `gds-domains` implementation.
 
 See [Getting Started](getting-started.md) for a full walkthrough.
 
 ## Relationship to the Ecosystem
 
-`gds-symbolic` sits between the control DSL and continuous-time simulation. It
-extends `gds-control` models with SymPy expressions and can produce ODE
+`gds_domains.symbolic` sits between the control DSL and continuous-time simulation. It
+extends `gds_domains.control` models with SymPy expressions and can produce ODE
 functions for `gds-continuous`.
 
 ## Credits
 
-Built on [gds-control](../control/index.md) by [DynamicalSystemsGroup](https://dynamicalsystemsgroup.com).
+Built on the [control DSL](../control/index.md) by [DynamicalSystemsGroup](https://dynamicalsystemsgroup.com).

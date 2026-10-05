@@ -1,0 +1,6 @@
+Loaded library resources: 94
+ERROR line 2: Couldn't resolve reference to Type 'MissingDefinition'.
+ERROR line 2: An occurrence, item or part must be typed by occurrence definitions.
+ERROR line 2: The feature 'relatedElement' of 'org.omg.sysml.lang.sysml.impl.FeatureTypingImpl@79992e2f{file:/home/rohan/Documents/Github/work/dsg/sysml-v2-lab/tests/unresolved.sysml#//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0}' contains an unresolved proxy 'org.omg.sysml.lang.sysml.impl.TypeImpl@33ae1d53{file:/home/rohan/Documents/Github/work/dsg/sysml-v2-lab/tests/unresolved.sysml#|0}'
+ERROR line 2: The feature 'type' of 'org.omg.sysml.lang.sysml.impl.FeatureTypingImpl@79992e2f{file:/home/rohan/Documents/Github/work/dsg/sysml-v2-lab/tests/unresolved.sysml#//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0}' contains an unresolved proxy 'org.omg.sysml.lang.sysml.impl.TypeImpl@33ae1d53{file:/home/rohan/Documents/Github/work/dsg/sysml-v2-lab/tests/unresolved.sysml#|0}'
+Validation complete: 4 errors, 4 total diagnostics.

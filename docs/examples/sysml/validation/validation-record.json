@@ -1,0 +1,15 @@
+{
+  "timestamp_utc": "2026-09-25T05:54:55.778873+00:00",
+  "pilot_release": "2026-08",
+  "pilot_build": "0.62.0.202609111953",
+  "java": "Temurin 21.0.12.1+1",
+  "result": "thermostat accepted; syntax and unresolved-reference controls rejected",
+  "sha256": {
+    "projects/gds-interop/src/thermostat.sysml": "1caafbc77103bfb50312fbf5d696b622da11507eaaab7d9babbd09049be1a1e4",
+    "projects/gds-interop/src/thermostat.mapping.json": "0700f2e182c66c44b61c1f08cc7e229edf1e0a8cf39f0f450118d2093e6787b6",
+    "src/ValidateSysML.java": "11c44f25d87e31a38dec5d38d2d6755f0d12cd680f4bcaec2827a9cc1278c987",
+    "logs/thermostat-validation.log": "abb880ab96fc96d38c8dd62517175f9fb063c29958cb3111b06bf28e987975da",
+    "logs/unresolved.log": "d40aaa695e6c99b4b9b779e3ed98dde89e53fec16861c86ee45f09eff279821f",
+    "logs/syntax-error.log": "eff7509119d1b64b9f8d826d6ac1d07e13fc426edd4a45cc08775832043d8ff0"
+  }
+}

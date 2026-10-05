@@ -41,6 +41,15 @@ flowchart TD
 
 ## Files
 
-- [model.py](https://github.com/DynamicalSystemsGroup/gds-examples/blob/main/thermostat/model.py)
-- [test_model.py](https://github.com/DynamicalSystemsGroup/gds-examples/blob/main/thermostat/test_model.py)
-- [VIEWS.md](https://github.com/DynamicalSystemsGroup/gds-examples/blob/main/thermostat/VIEWS.md)
+- [model.py](https://github.com/DynamicalSystemsGroup/gds-core/blob/main/packages/gds-examples/control/thermostat/model.py)
+- [test_model.py](https://github.com/DynamicalSystemsGroup/gds-core/blob/main/packages/gds-examples/control/thermostat/test_model.py)
+- [VIEWS.md](https://github.com/DynamicalSystemsGroup/gds-core/blob/main/packages/gds-examples/control/thermostat/VIEWS.md)
+
+## Experimental SysML v2 view
+
+The [SysML export experiment](../sysml/README.md) projects this model into four
+parts and three forward connections, with a companion mapping/loss manifest.
+That artifact passed the pinned official Pilot validator with zero diagnostics.
+The backward Energy Cost feedback is omitted with diagnostics; the view does
+not reproduce the thermostat's execution behavior. See the
+[interoperability guide](../../guides/sysml-v2.md) for tool integration status.

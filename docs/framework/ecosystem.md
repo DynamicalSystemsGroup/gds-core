@@ -13,12 +13,20 @@ The GDS ecosystem is a family of composable packages for specifying, visualizing
 | | `gds_domains.games` | Typed DSL for compositional game theory (Open Games) |
 | | `gds_domains.software` | Software architecture DSL (DFD, state machine, C4, ERD, etc.) |
 | | `gds_domains.business` | Business dynamics DSL (CLD, supply chain, value stream map) |
+| | `gds_domains.symbolic` | Symbolic equations and linearization; install `gds-domains[symbolic]` |
+| **gds-interchange** | `gds_interchange.owl` | OWL/Turtle, SHACL, SPARQL, and RDF round-trip tooling |
 | **gds-sim** | `gds_sim` | Simulation engine (standalone, Pydantic-only) |
 | **gds-continuous** | `gds_continuous` | Continuous-time ODE simulation engine |
 | **gds-analysis** | `gds_analysis` | GDSSpec-to-gds-sim bridge, reachability, trajectory metrics |
 | **gds-analysis.psuu** | `gds_analysis.psuu` | Parameter sweeps, KPIs, optimization, sensitivity analysis |
 | **gds-psuu** | `gds_psuu` | Deprecated compatibility package for `gds_analysis.psuu` |
 | **gds-examples** | — | Tutorial models demonstrating framework features |
+
+An experimental development exporter at `gds_interchange.sysml` projects flat
+GDS architectures into SysML v2 text with a mapping/loss manifest. See
+[SysML v2 interoperability](../guides/sysml-v2.md) for recorded Pilot validation,
+unsupported semantics, and the untested OpenSysML and repository integrations.
+Use the [package map](../packages/index.md) for current installation choices.
 
 ## Dependency Graph
 

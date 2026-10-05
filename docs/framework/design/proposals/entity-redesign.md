@@ -4,6 +4,15 @@
 **Authors:** [core team]
 **Date:** 2026-02-16
 
+!!! note "Current implementation status (2026-10-04)"
+    This document preserves the original design proposal. Its SysML import,
+    unit-library, rich entity, and round-trip mappings are proposed capabilities,
+    not established integrations. Subsequent development provides a bounded
+    one-way [structural export](../../../guides/sysml-v2.md); the
+    [thermostat artifact](../../../examples/sysml/README.md) passed the official
+    Pilot validator. That result does not establish the broader mappings or
+    execution equivalence described below.
+
 ---
 
 ## Summary

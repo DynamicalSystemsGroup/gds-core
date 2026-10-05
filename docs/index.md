@@ -25,6 +25,7 @@ GDS gives you a composition algebra for modeling complex systems — from epidem
 | Understand specification vs execution | [Concepts](concepts/specification-vs-execution.md) |
 | Bridge `GDSSpec` structures to runtime models | [gds-analysis](analysis/index.md) |
 | Sweep or optimize parameters | [Parameter Sweep](guides/parameter-sweep.md) |
+| Exchange a structural model with SysML v2 tools | [SysML v2 Interoperability](guides/sysml-v2.md) (experimental) |
 
 ## Interactive Notebooks
 
@@ -50,6 +51,12 @@ names, import paths, and how the pieces fit together.
 | [`gds-framework`](framework/index.md) | `gds` | Core engine -- composition algebra, compiler, verification |
 | [`gds-viz`](viz/index.md) | `gds_viz` | Mermaid diagrams + [phase portraits](viz/index.md) `[phase]` |
 | [`gds-interchange`](owl/index.md) | `gds_interchange.owl` | OWL/SHACL/SPARQL export for formal representability |
+
+Development work also includes an experimental
+[SysML v2 structural exporter](guides/sysml-v2.md). Its thermostat artifact has
+passed the official Pilot validator. This does not establish behavioral
+equivalence or tested OpenSysML/repository synchronization, and the exporter is
+not part of the published symbolic security releases.
 
 ### Domain DSLs
 
