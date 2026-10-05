@@ -15,6 +15,11 @@
 
 ## What is this?
 
+This page covers `gds_interchange.owl`. For the experimental SysML v2 structural
+projection, see [SysML v2 interoperability](../guides/sysml-v2.md). The two
+formats have separate mapping and validation boundaries; RDF output alone does
+not establish SysML v2 API compatibility.
+
 `gds-owl` exports GDS specifications to RDF/OWL and imports them back, enabling interoperability with semantic web tooling. It provides:
 
 - **OWL ontology** — class hierarchy mirroring GDS types (blocks, roles, entities, spaces, parameters)

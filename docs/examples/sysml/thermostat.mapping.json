@@ -1,0 +1,270 @@
+{
+  "mapping_version": "gds-sysml-structural/0.1",
+  "source": {
+    "uri": "repo:packages/gds-examples/control/thermostat/model.py",
+    "revision": "sha256:8df2face868474aa60f657b17bfdc35116435106eae0346c96869ec66dc86a55",
+    "name": "Thermostat PID"
+  },
+  "scope": "flat architecture projection; no execution semantics",
+  "validation": "not validated by a SysML implementation",
+  "elements": [
+    {
+      "source_pointer": "",
+      "target": "GDSExport",
+      "name": "Thermostat PID"
+    },
+    {
+      "source_pointer": "/spaces/CommandSpace",
+      "target": "GDSExport::Payload0",
+      "name": "CommandSpace"
+    },
+    {
+      "source_pointer": "/spaces/CommandSpace/fields/heater_power",
+      "target": "GDSExport::Payload0::field0",
+      "name": "heater_power",
+      "type_name": "HeaterPower",
+      "units": null
+    },
+    {
+      "source_pointer": "/spaces/EnergyCostSpace",
+      "target": "GDSExport::Payload1",
+      "name": "EnergyCostSpace"
+    },
+    {
+      "source_pointer": "/spaces/EnergyCostSpace/fields/cost",
+      "target": "GDSExport::Payload1::field0",
+      "name": "cost",
+      "type_name": "EnergyCost",
+      "units": null
+    },
+    {
+      "source_pointer": "/spaces/RoomStateSpace",
+      "target": "GDSExport::Payload2",
+      "name": "RoomStateSpace"
+    },
+    {
+      "source_pointer": "/spaces/RoomStateSpace/fields/energy",
+      "target": "GDSExport::Payload2::field0",
+      "name": "energy",
+      "type_name": "EnergyCost",
+      "units": null
+    },
+    {
+      "source_pointer": "/spaces/RoomStateSpace/fields/temperature",
+      "target": "GDSExport::Payload2::field1",
+      "name": "temperature",
+      "type_name": "Temperature",
+      "units": null
+    },
+    {
+      "source_pointer": "/spaces/TemperatureSpace",
+      "target": "GDSExport::Payload3",
+      "name": "TemperatureSpace"
+    },
+    {
+      "source_pointer": "/spaces/TemperatureSpace/fields/temperature",
+      "target": "GDSExport::Payload3::field0",
+      "name": "temperature",
+      "type_name": "Temperature",
+      "units": null
+    },
+    {
+      "source_pointer": "/blocks/PID Controller",
+      "target": "GDSExport::system::block0",
+      "name": "PID Controller",
+      "role": "policy"
+    },
+    {
+      "source_pointer": "/blocks/PID Controller/interface/forward_in/0",
+      "target": "GDSExport::system::block0::forward_in0",
+      "name": "Measured Temperature",
+      "slot": "forward_in"
+    },
+    {
+      "source_pointer": "/blocks/PID Controller/interface/forward_out/0",
+      "target": "GDSExport::system::block0::forward_out0",
+      "name": "Heater Command",
+      "slot": "forward_out"
+    },
+    {
+      "source_pointer": "/blocks/Room Plant",
+      "target": "GDSExport::system::block1",
+      "name": "Room Plant",
+      "role": "control"
+    },
+    {
+      "source_pointer": "/blocks/Room Plant/interface/forward_in/0",
+      "target": "GDSExport::system::block1::forward_in0",
+      "name": "Heater Command",
+      "slot": "forward_in"
+    },
+    {
+      "source_pointer": "/blocks/Room Plant/interface/forward_out/0",
+      "target": "GDSExport::system::block1::forward_out0",
+      "name": "Room State",
+      "slot": "forward_out"
+    },
+    {
+      "source_pointer": "/blocks/Temperature Sensor",
+      "target": "GDSExport::system::block2",
+      "name": "Temperature Sensor",
+      "role": "boundary"
+    },
+    {
+      "source_pointer": "/blocks/Temperature Sensor/interface/forward_out/0",
+      "target": "GDSExport::system::block2::forward_out0",
+      "name": "Measured Temperature",
+      "slot": "forward_out"
+    },
+    {
+      "source_pointer": "/blocks/Update Room",
+      "target": "GDSExport::system::block3",
+      "name": "Update Room",
+      "role": "mechanism"
+    },
+    {
+      "source_pointer": "/blocks/Update Room/interface/forward_in/0",
+      "target": "GDSExport::system::block3::forward_in0",
+      "name": "Room State",
+      "slot": "forward_in"
+    },
+    {
+      "source_pointer": "/wirings/Thermostat Loop/wires/0",
+      "target": "GDSExport::system::wire0",
+      "source_port": "block2.forward_out0",
+      "target_port": "block0.forward_in0",
+      "kind": "forward"
+    },
+    {
+      "source_pointer": "/wirings/Thermostat Loop/wires/1",
+      "target": "GDSExport::system::wire1",
+      "source_port": "block0.forward_out0",
+      "target_port": "block1.forward_in0",
+      "kind": "forward"
+    },
+    {
+      "source_pointer": "/wirings/Thermostat Loop/wires/2",
+      "target": "GDSExport::system::wire2",
+      "source_port": "block1.forward_out0",
+      "target_port": "block3.forward_in0",
+      "kind": "forward"
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "STRUCTURAL_ONLY",
+      "source_pointer": "",
+      "message": "Behavior, roles and scheduling are not executable."
+    },
+    {
+      "code": "ANNOTATIONS_OMITTED",
+      "source_pointer": "",
+      "message": "Descriptions, tags and logic are not projected."
+    },
+    {
+      "code": "OUT_OF_SCOPE",
+      "source_pointer": "/entities",
+      "message": "entities is not projected."
+    },
+    {
+      "code": "OUT_OF_SCOPE",
+      "source_pointer": "/parameter_schema",
+      "message": "parameter_schema is not projected."
+    },
+    {
+      "code": "OUT_OF_SCOPE",
+      "source_pointer": "/admissibility_constraints",
+      "message": "admissibility_constraints is not projected."
+    },
+    {
+      "code": "SCALAR_APPROXIMATION",
+      "source_pointer": "/spaces/CommandSpace/fields/heater_power",
+      "message": "Python float projected as Real."
+    },
+    {
+      "code": "TYPE_SEMANTICS_OMITTED",
+      "source_pointer": "/spaces/CommandSpace/fields/heater_power",
+      "message": "Units and value constraints are not enforced in this view."
+    },
+    {
+      "code": "SCALAR_APPROXIMATION",
+      "source_pointer": "/spaces/EnergyCostSpace/fields/cost",
+      "message": "Python float projected as Real."
+    },
+    {
+      "code": "TYPE_SEMANTICS_OMITTED",
+      "source_pointer": "/spaces/EnergyCostSpace/fields/cost",
+      "message": "Units and value constraints are not enforced in this view."
+    },
+    {
+      "code": "SCALAR_APPROXIMATION",
+      "source_pointer": "/spaces/RoomStateSpace/fields/energy",
+      "message": "Python float projected as Real."
+    },
+    {
+      "code": "TYPE_SEMANTICS_OMITTED",
+      "source_pointer": "/spaces/RoomStateSpace/fields/energy",
+      "message": "Units and value constraints are not enforced in this view."
+    },
+    {
+      "code": "SCALAR_APPROXIMATION",
+      "source_pointer": "/spaces/RoomStateSpace/fields/temperature",
+      "message": "Python float projected as Real."
+    },
+    {
+      "code": "SCALAR_APPROXIMATION",
+      "source_pointer": "/spaces/TemperatureSpace/fields/temperature",
+      "message": "Python float projected as Real."
+    },
+    {
+      "code": "TYPE_REGISTRY_PROJECTED",
+      "source_pointer": "/types",
+      "message": "Only space field scalar types are projected; named types are not defined."
+    },
+    {
+      "code": "UNSUPPORTED_CONNECTION",
+      "source_pointer": "/wirings/Thermostat Loop/wires/3",
+      "message": "feedback connection omitted; no execution interpretation."
+    },
+    {
+      "code": "BACKWARD_PORT",
+      "source_pointer": "/blocks/PID Controller/interface/backward_in/0",
+      "message": "Backward channel omitted."
+    },
+    {
+      "code": "BACKWARD_PORT",
+      "source_pointer": "/blocks/Room Plant/interface/backward_out/0",
+      "message": "Backward channel omitted."
+    }
+  ],
+  "connections": [
+    {
+      "wiring": "Thermostat Loop",
+      "wire_index": 0,
+      "source_port": "Measured Temperature",
+      "target_port": "Measured Temperature",
+      "kind": "forward"
+    },
+    {
+      "wiring": "Thermostat Loop",
+      "wire_index": 1,
+      "source_port": "Heater Command",
+      "target_port": "Heater Command",
+      "kind": "forward"
+    },
+    {
+      "wiring": "Thermostat Loop",
+      "wire_index": 2,
+      "source_port": "Room State",
+      "target_port": "Room State",
+      "kind": "forward"
+    },
+    {
+      "wiring": "Thermostat Loop",
+      "wire_index": 3,
+      "source_port": "Energy Cost",
+      "target_port": "Energy Cost",
+      "kind": "feedback"
+    }
+  ]
+}

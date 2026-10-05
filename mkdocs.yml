@@ -108,6 +108,9 @@ plugins:
           - guides/real-world-patterns.md
           - guides/troubleshooting.md
           - guides/interoperability.md
+          - {guides/sysml-v2.md: "Experimental SysML structural export, recorded Pilot validation, and OpenSysML integration boundaries"}
+          - examples/sysml/README.md
+          - examples/sysml/validation/README.md
           - guides/architecture-milestone-layer0.md
           - guides/dsl-roadmap.md
           - research/research-boundaries.md
@@ -165,6 +168,7 @@ plugins:
           - research/deep_research.md
           - research/paper-implementation-gap.md
           - research/semantic-web-summary.md
+          - research/sysml-v2-overlap.md
           - research/formal-representability.md
           - research/representation-gap.md
           - research/verification-plan.md
@@ -222,6 +226,9 @@ nav:
           - gds-interchange / OWL:
               - Overview: owl/index.md
               - Getting Started: owl/getting-started.md
+              - SysML v2 Interoperability: guides/sysml-v2.md
+              - Thermostat SysML Export: examples/sysml/README.md
+              - Pilot Validation Evidence: examples/sysml/validation/README.md
               - Representability: owl/guide/representability.md
               - Formal Analysis: research/formal-representability.md
           - gds-proof:
@@ -461,6 +468,7 @@ nav:
           - Paper Implementation Gap: research/paper-implementation-gap.md
           - Representation Gap: research/representation-gap.md
           - Semantic Web Integration: research/semantic-web-summary.md
+          - SysML v2 Mapping Study: research/sysml-v2-overlap.md
           - Formal Representability: research/formal-representability.md
           - Formal Verification:
               - Verification Plan: research/verification-plan.md
